@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Someone's iPhone</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e5e1;font-family:-apple-system,BlinkMacSystemFont,"Arial",sans-serif;color:#242424}
+.phone{width:min(390px,100%);min-height:760px;margin:20px auto;background:#f5f2ed;border:7px solid #242424;border-radius:42px;overflow:hidden;position:relative;box-shadow:0 12px 40px #0002}
+.status{height:42px;padding:14px 24px 0;display:flex;justify-content:space-between;font-size:12px;font-weight:700}
+#screen{padding:16px 20px 30px;min-height:650px}
+h1{font-size:26px;margin:12px 0 8px}
+.sub{color:#777;font-size:13px;margin-bottom:24px}
+.apps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 12px;margin-top:30px}
+.app{border:0;background:transparent;color:#333;cursor:pointer;text-align:center;font:inherit;font-size:12px}
+.icon{display:grid;place-items:center;width:62px;height:62px;border-radius:18px;margin:0 auto 8px;color:white;font-size:27px;box-shadow:inset 0 1px #ffffff55}
+.green{background:#76ad91}.purple{background:#aa96cf}.blue{background:#6d9dd0}.yellow{background:#d5bb65}.pink{background:#d58a92}.indigo{background:#7d86c1}.gray{background:#777780}.teal{background:#70a9b8}.orange{background:#d79a6c}
+.dock{margin-top:35px;padding:14px;background:#e2ddd5;border-radius:22px;display:flex;justify-content:space-around}
+.dock button{border:0;background:transparent;font-size:25px;cursor:pointer}
+button{cursor:pointer}
+.back{border:0;background:#e7e3dc;padding:9px 13px;border-radius:12px;margin-bottom:15px}
+.card{background:#fff;padding:14px;border-radius:16px;margin:10px 0;box-shadow:0 2px 8px #00008}
+.card button{border:0;background:transparent;text-align:left;width:100%;font-size:15px}
+.small{font-size:12px;color:#777;margin-top:5px}
+input,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:12px;font:inherit;margin:7px 0}
+textarea{min-height:110px;resize:vertical}
+.action{background:#242424;color:white;border:0;border-radius:12px;padding:12px 16px;margin:5px 0}
+.bubble{padding:11px 14px;border-radius:17px;background:#e5e5e5;margin:9px 0;max-width:85%;font-size:14px}
+.mine{background:#91d5a5;margin-left:auto}
+.photo{background:linear-gradient(135deg,#d9c6bc,#9eabb7);min-height:95px;border-radius:12px;display:grid;place-items:center;font-size:28px}
+.note{white-space:pre-wrap;overflow-wrap:anywhere}
+.footer{text-align:center;color:#888;font-size:11px;padding:10px}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="status"><span>9:41</span><span>●●●  Wi-Fi  ▰</span></div>
+  <main id="screen"></main>
+  <div class="footer">A FICTIONAL PHONE · STORY MODE</div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const screen=$("#screen");
+
+const apps=[
+ ["💬","메시지","green","messages"],
+ ["🖼️","사진첩","purple","photos"],
+ ["📞","전화","blue","phone"],
+ ["📝","메모","yellow","notes"],
+ ["🧭","인터넷","pink","web"],
+ ["◎","SNS","indigo","social"],
+ ["📅","캘린더","teal","calendar"],
+ ["🔒","비밀 폴더","gray","secret"]
+];
+
+function home(){
+ screen.innerHTML=`
+ <h1>월요일, 9:41</h1>
+ <div class="sub">누군가의 아이폰</div>
+ <div class="apps">${apps.map(a=>`
+ <button class="app" onclick="openApp('${a[3]}')">
+ <span class="icon ${a[2]}">${a[0]}</span>${a[1]}</button>`).join("")}</div>
+ <div class="dock"><button onclick="openApp('phone')">📞</button>
+ <button onclick="openApp('messages')">💬</button>
+ <button onclick="openApp('photos')">🖼️</button></div>`;
+}
+
+function shell(title,body){
+ screen.innerHTML=`<button class="back" onclick="home()">‹ 홈 화면</button>
+ <h1>${title}</h1>${body}`;
+}
+
+function openApp(name){
+ if(name==="messages")return messages();
+ if(name==="photos")return photos();
+ if(name==="phone")return phone();
+ if(name==="notes")return notes();
+ if(name==="web")return web();
+ if(name==="social")return social();
+ if(name==="calendar")return calendar();
+ if(name==="secret")return secret();
+}
+
+function messages(){
+ shell("메시지",`
+ <div class="card"><button onclick="chat('지우')">지우 <div class="small">오늘 꼭 확인해 봐.</div></button></div>
+ <div class="card"><button onclick="chat('모르는 번호')">알 수 없는 번호<div class="small">그 사진을 아직 가지고 있어?</div></button></div>
+ <div class="card"><button onclick="chat('엄마')">엄마<div class="small">집에 언제 오니?</div></button></div>`);
+}
+function chat(who){
+ shell(who,`<div class="bubble">${who==="지우"?"어제 네 방에 갔었어.":who==="엄마"?"늦으면 연락해.":"사진을 확인해 봐. 숨겨진 날짜가 있어."}</div>
+ <div class="bubble mine">무슨 말이야?</div>
+ <div class="bubble">${who==="지우"?"책상 서랍도 확인해.":"답장은 나중에 해도 돼."}</div>
+ <div class="small">※ 대화 내용은 예시야. 코드에서 바꿀 수 있어.</div>`);
+}
+function photos(){
+ shell("사진첩",`
+ <div class="sub">최근 항목 · 예시 사진</div>
+ <div class="apps">
+ ${["🌅","🏠","🌃","🗝️","🌷","📦"].map((p,i)=>`
+ <button class="app" onclick="photoDetail(${i})">
+ <span class="photo">${p}</span><span>사진 ${i+1}</span></button>`).join("")}
+ </div>`);
+}
+function photoDetail(i){
+ const captions=["노을이 지던 날","빈 방","오래된 거리","작은 열쇠","누군가 두고 간 꽃","보관 상자"];
+ shell("사진 보기",`<div class="photo" style="height:250px;font-size:70px">${["🌅","🏠","🌃","🗝️","🌷","📦"][i]}</div>
+ <p>${captions[i]}</p><div class="small">사진 설명도 직접 바꿔 보세요.</div>`);
+}
+function phone(){
+ shell("최근 통화",`
+ ${["지우 · 오늘 09:12","모르는 번호 · 어제 23:48","엄마 · 어제 18:30"].map(t=>`<div class="card">📞 ${t}</div>`).join("")}`);
+}
+function notes(){
+ shell("메모",`<div class="sub">메모를 누르면 내용을 수정할 수 있어.</div>
+ <input id="noteTitle" placeholder="메모 제목" value="기억해야 할 것">
+ <textarea id="noteBody">서랍 안에 열쇠가 있다.
+비밀번호는 그날의 날짜일지도 모른다.</textarea>
+ <button class="action" onclick="saveNote()">메모 저장</button><div id="noteStatus" class="small"></div>`);
+}
+function saveNote(){
+ const data={title:$("#noteTitle").value,body:$("#noteBody").value};
+ try{localStorage.setItem("storyNote",JSON.stringify(data));$("#noteStatus").textContent="이 기기에 메모를 저장했어."}
+ catch(e){$("#noteStatus").textContent="저장할 수 없어. 내용을 복사해 둬."}
+}
+function web(){
+ shell("인터넷",`<div class="sub">가상의 검색 엔진</div>
+ <input id="query" placeholder="검색어를 입력해 봐">
+ <button class="action" onclick="searchStory()">검색</button><div id="results"></div>`);
+}
+function searchStory(){
+ const q=$("#query").value.trim();
+ $("#results").innerHTML=q?`<div class="card"><b>${escapeText(q)} - 검색 결과</b><p>관련된 결과가 없습니다.</p><p>기록 보관소: 오래된 사진과 날짜를 확인하세요.</p></div>`:"검색어를 입력해 줘.";
+}
+function social(){
+ shell("SNS",`
+ <div class="card"><b>@jiu_daily</b><p>오늘은 이상한 일이 있었다.</p><div class="photo">🌃</div><div class="small">좋아요 12개 · 댓글 3개</div></div>
+ <div class="card"><b>@unknown</b><p>과거의 기록은 사라지지 않는다.</p><div class="small">어제 오후 11:08</div></div>`);
+}
+function calendar(){
+ shell("캘린더",`<div class="sub">10월 · 일정</div>
+ ${[12,18,21,24,27].map((d,i)=>`<div class="card"><b>10월 ${d}일</b><p>${["오래된 사진을 확인하기","지우에게 연락하기","빈집에 가기","메모를 다시 읽기","열쇠를 찾기"][i]}</p></div>`).join("")}`);
+}
+function secret(){
+ shell("비밀 폴더",`<div class="sub">암호를 입력하세요</div>
+ <input id="pass" type="password" placeholder="비밀번호">
+ <button class="action" onclick="unlock()">열기</button><div id="secretResult"></div>`);
+}
+function unlock(){
+ const result=$("#secretResult");
+ if($("#pass").value==="1024"){
+ result.innerHTML=`<div class="card"><h3>숨겨진 기록</h3><p>마지막 사진은 10월 24일에 찍혔다.</p><p>다른 앱에서 단서를 더 찾아보자.</p></div>`;
+ }else{
+ result.textContent="비밀번호가 맞지 않아.";
+ }
+}
+function escapeText(s){
+ return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+home();
+</script>
+</body>
+</html>
